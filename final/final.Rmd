@@ -1,0 +1,181 @@
+---
+title: "Ülkelerin Sosyo-Ekonomik Yapıları"
+author: 
+  - İbrahim Kürşat Pekdemir[^1]
+bibliography: ../bibliography/biblio.bib
+csl: ../csl/apa-tr.csl
+header-includes:
+  - \usepackage{polyglossia}
+  - \setmainlanguage{turkish}
+  - \usepackage{booktabs}
+  - \usepackage{caption} 
+  - \captionsetup[table]{skip=10pt}
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+    keep_tex: no
+    latex_engine: xelatex
+    number_sections: yes
+    toc: no
+geometry: margin=1in
+link-citations: yes
+urlcolor: blue
+fontsize: 12pt
+biblio-style: apalike
+abstract: |
+  Sosyo-ekonomik göstergelerin, belirlenen ülkeler üzerinden aralarındaki ilişkinin yönü ve boyutu.
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+<!-- ======================================================================= -->
+<!-- ============================== NOTLAR ================================= -->
+<!-- ======================================================================= -->
+[^1]: 18080768, [Github Repo](https://github.com/kursadp/final)
+
+
+
+# Giriş
+İktisadın temel varsayımlarından olan fayda çoklamasında, bireyin daha fazla tükettikçe daha mutlu olacağını varsayılmış. Dolayısıyla, literatürün ilk örneklerinde iktisadi büyüme ve kalkınma birlikte ele alınarak büyüdükçe beraberinde kalkınmanın da gerçekleşeceği varsayıldı. İktisat biliminin ilk eseri olarak kabul edilen Ulusların Zenginliği adlı kitapta, ekonomik büyüme ve ekonomik kalkınmanın aynı kavramlar olduğu, kalkınmanın büyümenin içinde kendiliğinden gerçekleşen bir süreç olduğu varsayıldı. Peki durum böyle midir? Sosyal, kültürel ve siyasal faktörleri dışlayarak ülkelerin gelişmişlik düzeylerini milli gelir üzerinden açıklayıp, ülkelerin gelişmişlik düzeyleri arasındaki farkı sade ekonomik nedenlere indirgemek gerçekçi değildir. Dolayısıyla büyüme ve kalkınmayı birbirinden ayırmak gerekir kalkınma ekonomik olduğu kadar sosyal bir olgudur.1970 sonrası kalkınma iktisadı bu durum üzerine yoğunlaşarak milli gelir üzerindeki artışın refahı artışı anlamına gelmediğini kalkınma dediğimiz kavramı etkileyen birçok sosyal faktörün olduğunu belirtmiştir. Kalkınmanın belirleyicileri olan sosyal faktörler üzerine birçok endeks ve kalkınma teorileri geliştirilmiştir. Çalışmamda kullandığım güvenlik endeksi, yaşam kalitesi endeksi, sağlık endeksi, yaşam maliyeti, bebek ölüm oranı bunlardan birkaçıdır.  Bu çalışmamda seçtiğim 65 ülkeyi sosyo-ekonomik göstergeler çerçevesinde inceleyerek bu göstergelerin birbirleri ile olan ilişkilerinin yönünü ve oranını yorumladım. 
+
+
+
+## Çalışmanın Amacı
+Çalışmamda seçtiğim 65 ülkeyi, 15 sosyo-ekonomik ölçüt ile birbirleri arasındaki orantının
+yönünü ve gücünü tespit ederek belli yorumlarda bulunmayı amaçlıyorum. Ülkeler arasındaki
+sosyo-ekonomik farklılıkların nedenin üzerinde durup, değişkenler arasında tespit ettiğim
+korelasyonlar üzerine tespitlerimi belirtmek istiyorum. Belirlediğim değişkenlerin birbirlerine
+etkileri nedir, ülkelerin refah seviyelerini ne ölçüde etkilemektedir bunlar üzerine durmayı
+planlıyorum.
+
+
+## Literatür 
+
+Kalkınma denildiği zaman genellikle ekonominin büyümesi olarak düşünülmektedir. Karar vericiler bu yüzden genellikle sosyal alanları göz ardı eder. Sonuç olarak büyüyen ekonomiyle birlikte bir takım sosyo-ekonomik sorunlar ortaya çıkabilir. Bu durum büyümenin gerekli ama yeterli olmadığı, tek başına yaşam kalitesini belirleyen bir gösterge olamayacağı savının kuvvetlenmesine neden olmuştur. @aycsegul2020insani. Bu da bizlere ülkeleri kategorize ederken İnsani Gelişmişlik Endeksi , Yaşam Beklentisi, Yetişkin Okur-Yazarlığı ve Okullaşma gibi faktörleri göz önünde bulundurmamızı sağlamıştır. @taner2011analysis
+Benzer değişkenler ile yapılan, ülkelerin sosyo-ekonomik göstergelerini karşılaştırarak, seçilen ölçütlerin, ülkelerin gelişmişlik düzeylerini ne yönde ve nasıl etkilediğini, seçilen faktörlerin diğer ölçütleri ile olan ilişkisini @erol2013turkiye, kullanılan bu değişkenlerin nasıl kullanılabileceğinin, geçerliliklerinin ve sınırlarının genel çerçevesi çizilmelidir.  @vyas2006constructing.
+
+# Veri 
+65 gözlem, 16 değişkenden oluşan veri setimin Ulusal hesap içeren bilgilerini dünya bankasının ([Data.WorldBankl!]( https://data.worldbank.org)) veri tabanından, diğer sosyal göstergeler ve endeksleri ise birleşmiş milletlerin veri tabanı olan ([Undata!]( http://data.un.org)) ve ([Numbeo.com!]( www.numbeo.com ))
+sitelerinden temin ettim. Veri setimde bulunan 65 gözlem, 14 numeric değişken ele alınarak, bu değişkenlerin ortalaması, standart sapması, max, min ve ortanca değerini gösteren (Tablo1) oluşturulmuştur.
+
+
+
+
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(here)
+sosyo <- read_csv(here("../data/sosyo.csv"))
+```
+
+```{r echo=FALSE, results='asis'}
+library(xtable) 
+# devtools::install_github("emraher/summarytools")
+library(summarytools)
+st_options(lang = "tr")
+sosyo %>%
+  select("total_population","gdp_gross_domestic_product","gdp_growth_rate","gdp_per_capita","Unemployment","urban_population","infant_mortality_rate","purchasing_power_index","security_index","health_index","cost_of_living","rent_index","quality_of_life_index") %>% 
+  descr(stats = c("mean", "sd", "min", "med", "max"), transpose = TRUE) %>% 
+  xtable(caption = "Özet İstatistikler",
+         label = "tab:ozet",
+         align = c("l", "c", "c", "c", "c", "c")) %>% 
+  print(booktabs = TRUE, comment = FALSE, caption.placement = "top")
+``` 
+
+
+
+
+
+
+
+# Yöntem ve Veri Analizi
+Kalkınmanın coğrafya ile olan ilişkisi üzerine yorumlar yapabilmemiz için ilk olarak veri setimizde bulunan ülkeleri şekil 1'de 14 farklı bölgelere ayırıyoruz.
+  
+```{r echo=FALSE, fig.height=6, fig.width=5, fig.cap="Ülkelerin bölgelere dağılımı"}
+ggplot(sosyo) + geom_bar(aes(y = reigon))
+```
+```{r echo=FALSE, fig.align='center',fig.height=4, fig.width=12, fig.cap="Kişi başı gelir kutu grafiği" }
+sosyo %>% 
+  na.omit() %>% 
+  ggplot(aes(x = gdp_per_capita )) +
+  geom_boxplot() +
+  labs(x = "Kişi Başı Gelir") 
+```
+Özet tabloda da göründüğü gibi veri setimizde bulunan ülkelerin kişi başı gelir ortalaması 24018.50 ABD dolarıdır. Kişi başı gelir ortalaması bize net bir bilgi vermeyebilir. Bunun için kutu grafiği yardımı ile 'şekil 2' de maksimum, minimum, medyan ve çeyrekler açıklığı değerlerini gösteriyoruz. Buradan anlıyoruz ki bölgelerin kişi başı gelir ortalamaları birbirleri ile büyük farklılıklar içermektedir. 
+
+```{r  echo=FALSE, fig.height=10, fig.width=15, fig.cap="Bölgelerin kişi başı gelir kutu grafiği"}
+sosyo %>% 
+  na.omit() %>% 
+  ggplot(aes(x = gdp_per_capita ,y = reigon)) +
+  geom_boxplot() +
+  labs(x = "Kişi Başı Gelir",
+       y = "Bölge") 
+```
+Bölgeler birbirleri arasında büyük farklılıklar içerirken kendi içlerinde de büyük dengesizlikler mevcut. Buradan görüyoruz ki içerisinde 9 gözlem barındıran Doğu Avrupa ülkelerinin kişi başı gelir dağılımı; içerisinde 8 ülke barındıran Kuzey Avrupa ile içerisinde 9 ülke bulunan Güney Avrupa ülkelerine göre daha eşit gözüküyor.
+ Türkiyenin de bulunduğu Batı Asya bölgesinde yer alan ülkelerin birbirlerine göre farklı  değerlere sahip olduğunu görüyoruz. 
+
+## Satın alma gücü ile sağlık ilişkisi
+Aşağıda gördüğümüz saçılım grafiği bize insanların satın alma gücü artışının beraberinde daha sağlıklı bir yaşamı getirdiğini gösteriyor. Bazı aykırı gözlemler bulunsa da genel olarak satın alma gücü endeksi ile sağlık endeksinin pozitif yönlü bir ilişkisinin olduğu yorumunu yapabiliriz              .                 
+```{r echo=FALSE,fig.height=10, fig.width=15, fig.cap="Saçılım grafiği"}
+ggplot(sosyo, aes(x = purchasing_power_index, y = health_index  )) +
+  geom_point(na.rm = TRUE) +
+  scale_x_continuous("Satın Alma Gücü Endeksi") +
+  scale_y_continuous("Sağlık Endeksi") 
+```
+
+## Dağılım matrisi ve Isı haritası ile değişkenlerin birbirleri ile olan ilişkisi
+İşsizlik, 'kişi başı gelir' ve 'yaşam kalitesi endeksi' değişkenlerini dağılım matrisi kullanarak aralarındaki ilişkileri şekil 3'te gösterdim. Kişi başı gelirin yaşam kalitesi üzerinde büyük bir etkisi mevcuttur. Grafikte gördüğümüz üzere 0.582'lik büyük bir kolerasyon gözükmekte. Bu iki değişkennin nokta grafiklerine baktığımız zaman ise aralarında güçlü bir pozitif ilişkinin olduğu gözüküyor.Grafik kişi başı gelir ile işsizlik arasında -0.303'lük negatif bir kolerasyon olduğunu açıkca belirtiyor. İşsizlik ve kişi başı gelirin saçılım grafiğine baktığımızda, görece düşük kişi başı gelir seviyelerinde işsizliğin daha fazla olduğunu görüyoruz.
+
+
+Şekil 4'te göründüğü üzere değişkenler arasında ısı haritası oluşturdum. Pembe renk aralarındaki kolerasyonu, mor renk ise negatif kolerasyonun gücünü göstermekte. Haritada göze çarpan güçlü kolerasyonlarla negatif kolerasyonlar mevcut. Grafikte kişi başı gelir ile kira endeksi arasında güçlü bir kolerasyon olduğu gözükmekte, aralarındaki pozitif ilişki için kesin yorum yapmak elimizdeki verilerle zor gözüküyor, aralarındaki kolerasyona alım gücü eklenmeli, kira endeksi reel gelire göre yapılmalı. Bu durumda aralarında bir kolerasyon durumunun kalmayacağını düşünüyorum. İşsizlik ile sağlık endeksinin negatif yönlü bir ilişkisini grafiğimiz mor renkte bize gösteriyor. Yaşam kalitesi endeksinin; kişi başı gelir, sağlık endeksi, güvenlik endeksi, satın alma gücü endeksi gibi birçok değişkenle kolerasyon içerisinde olduğu görünmekte. Yaşam kalitesi ile nüfusun  -0.26'lık ters yönlü bir ilişkisi mevcut.
+
+```{r echo=FALSE, fig.align=1, fig.height=10, fig.width=15, fig.cap="İşsizlik, kişi başı gelir, yaşam kalitesi dağılım matrisi"}
+sosyo %>% 
+  select(gdp_per_capita, quality_of_life_index, Unemployment) %>% 
+  GGally::ggpairs()
+```
+
+```{r echo=FALSE, fig.align=1, fig.height=20, fig.width=20, fig.cap= 'Değişkenlerin Isı Haritası'}
+library(ggcorrplot)
+
+sosyo %>%
+  drop_na() %>%
+select("total_population","gdp_gross_domestic_product","gdp_growth_rate","gdp_per_capita","Unemployment","urban_population","infant_mortality_rate","purchasing_power_index","security_index","health_index","cost_of_living","rent_index","quality_of_life_index") %>%
+  cor() %>%
+  round(2) %>%
+  ggcorrplot(hc.order = TRUE,
+             type = "lower",
+             outline.color = "white",
+             ggtheme = ggplot2::theme_minimal,
+             colors = c(scales::muted("#bf3eff"), "#FFFFFF", "#ff34b3"),
+             lab = TRUE) +
+  labs(title = " Değişkenlerin Isı Haritası ")
+
+``` 
+\newpage
+## Kentleşme
+
+```{r echo=FALSE, fig.align=1, fig.height=5, fig.width=10, fig.cap="Kentli nüfus oranı"}
+sosyo %>%
+  filter( urban_population<300 ) %>%
+  ggplot( aes(x=urban_population)) +
+    geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)
+```
+
+
+Kentsel nüfusun  artması, buna bağlı olarak kentlerin genişlemesi, ulaşım, konut, sanayi alanı, enerji ihtiyaçlarını arttırırken; atıksu, hava kirliliği gibi çevre sorunlarını da beraberinde getirmektedir. Kentleşme, sanayileşme ve ekonomik gelişmeye paralel olarak yaşanan önemli süreçlerden biridir. Kentleşmenin sanayileşme ve ekonomik gelişmeye paralel olan ilişkisinin önemi göz önünde bulundurursak gelişmekte olan ülkelerde hızla artmaktadır. Veri setimizde bulunan 'Kentsel nüfusun oranı' değişkenini kullanarak yoğunluk grafiğini 'şekil 5' te gösterdim
+
+
+\newpage
+# Sonuç
+
+
+Ülkelerin sosyo-ekonomik yapıları farklıdır, bu farklılık beraberinde farklı yaşamlar getirmektedir. Bazı ülkeler iyi bir gelirle daha refah yaşamlar sürerken, bazıları daha düşük gelirle görece daha zorlu şartlarda hayatlarını sürdürmektedir. Ülkelerin ayrışan bu yapılarını salt ekonomik göstergeler ile açıklamak yeterli değildir. Bireyin parasal olanaklarının düzeyinin yanında hayat kalitesi, sağlık endeksi, güvenlik endeksi gibi birçok gelişmişlik düzeyi üzerine bize bilgi veren sosyal faktör vardır. Bu sosyal faktörler birbirleri ile ilişki seviyeleri yüksektir. Seçilen ülkeleri bölge bazında incelediğimiz zaman, bazı bölgelerin kişi başı geliriyle birlikte sosyo-ekonomik faktörlerinde çok düşük seviyelerde olduğunu görüyoruz. Peki bu gelişmemişliği bazı bölgelerde kümelenmesinin nedeni nedir? Ya da coğrafya kader midir? Bu sorularımızın cevabı için yeterli bir çalışma olmasa da gelişmişliğin göstergesi olan sosyo-ekonomik faktörlerin hangi bölgelerde yüksek düzeyde yoğunluk gösterdiğini ve bu göstergelerin birbirleri arasında ne yoğunlukta bir ilişkilerinin olduğunu, korelasyon ısı grafiği ile göstermiş bulunmaktayım. Granger nedensellik testi ya da regresyon kurarak aralarındaki korelasyonu net olarak doğruluğunu sağlayamasam da iktisat teorisinin bana verdiği bilgiler dahilinde grafikler üzerinden aralarındaki ilişkiyi yorumlamış bulunmaktayım. 
+
+\newpage
+# Kaynakça {#references}
+<div id="refs"></div>
+
